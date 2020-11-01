@@ -1,0 +1,11 @@
+,Targets,Attributes,Effect Size
+0,"['Instruments', 'Weapons']","['Pleasant', 'Unpleasant']",1.5400588799688402
+1,"['Male names', 'Female names']","['Career', 'Family']",1.8734029677223412
+2,"['Science', 'Arts']","['Male terms', 'Female terms']",1.2780363683584284
+3,"['Mental disease', 'Physical disease']","['Temporary', 'Permanent']",1.5356091007132708
+4,"['Flowers', 'Insects']","['Pleasant', 'Unpleasant']",1.5195881228256451
+5,"['Young people’s names', 'Old people’s names']","['Pleasant', 'Unpleasant']",1.2526681422627486
+6,"['Math', 'Arts']","['Male terms', 'Female terms']",1.0896145870075877
+7,"['European American names', 'African American names']","['Pleasant', 'Unpleasant']",1.5777841598418483
+8,"['European American names', 'African American names']","['Pleasant', 'Unpleasant']",1.3803482219626646
+9,"['European American names', 'African American names']","['Pleasant', 'Unpleasant']",1.4887438146314453
