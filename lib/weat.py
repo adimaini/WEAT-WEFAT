@@ -1,4 +1,5 @@
 import numpy as np
+import itertools
 
 class Weat:
 
@@ -13,28 +14,11 @@ class Weat:
         Returns: 
             score (float): cosine similarity score of the two vectors
         '''
-        score = np.dot(tar, att) / (np.linalg.norm(tar) * np.linalg.norm(att))
+        target = np.linalg.norm(tar, axis=1)
+        attribute = np.linalg.norm(att, axis=1)
+        dot = np.sum(np.matmul(target, attribute.T), axis=0)
+        score = dot / (target * attribute)
         return score
-
-
-    def mean_cos_similarity(self, tar, att): 
-        '''
-        Calculates the mean of the cosine similarity between the target and the range of attributes
-
-        Parameters: 
-            tar (np.array): target variable vector
-            att (np.array): attrbute variable matrix for the an attribute
-        
-        Returns: 
-            mean_cos (float): float type value of the mean cosine similarity between the target and the range of attributes
-
-        Example: 
-            tar (np.array): vector of word embeddings for "Programmer" 
-            att (np.array): matrix of word embeddings for males (man, husband, male, etc)
-        '''
-        mean_cos = np.mean([self.cos_similarity(tar, attribute) for attribute in att])
-        return mean_cos
-
 
     def association(self, tar, att1, att2):
         '''
@@ -53,9 +37,36 @@ class Weat:
             att1 (np.array): matrix of word embeddings for males (man, husband, male, etc)
             att2 (np.array): matrix of word embeddings for females (woman, wife, female, etc)
         '''
-        association = self.mean_cos_similarity(tar, att1) - self.mean_cos_similarity(tar, att2)
+        association = np.mean(self.cos_similarity(tar, att1), axis=-1) - \
+                        np.mean(self.cos_similarity(tar, att2), axis=-1)
         return association
 
+    def differential_association(self, t1, t2, att1, att2):
+        '''
+        xyz
+        '''
+        return np.sum(self.association(t1, att1, att2), axis=-1) - \
+                np.sum(self.association(t2, att1, att2), axis=-1)
+
+    def p_value(self, t1, t2, att1, att2): 
+        '''
+        xyz
+        '''
+        diff_association = self.differential_association(t1, t2, att1, att2)
+        target_words = np.concatenate([t1, t2])
+        np.random.shuffle(target_words)
+        # check if join of t1 and t2 have even number of elements, if not, remove last element
+        if target_words.shape[0] % 2 != 0:
+            target_words = target_words[:-1]
+
+        partition_differentiation = []
+        for permutation in itertools.islice(itertools.permutations(target_words), 0, 10000):
+            tar1_words = np.array(permutation[:len(target_words) // 2])
+            tar2_words = np.array(permutation[len(target_words) // 2:])
+            partition_differentiation.append(self.differential_association(tar1_words, tar2_words, att1, att2))
+
+        p_val = np.sum(np.array(partition_differentiation) > diff_association)/ len(partition_differentiation)
+        return p_val
 
     def effect_size(self, t1, t2, att1, att2):
         '''
@@ -76,10 +87,10 @@ class Weat:
             att1 (np.array): matrix of word embeddings for males (man, husband, male, etc)
             att2 (np.array): matrix of word embeddings for females (woman, wife, female, etc)
         '''
-        combined = np.concatenate([t1, t2])
-        num1 = np.mean([self.association(target, att1, att2) for target in t1]) 
-        num2 = np.mean([self.association(target, att1, att2) for target in t2]) 
-        denom = np.std(np.array([self.association(target, att1, att2) for target in combined]))
+        combined = np.concatenate([t1, t2], axis=0)
+        num1 = np.mean(self.association(t1, att1, att2), axis=0) 
+        num2 = np.mean(self.association(t2, att1, att2), axis=0) 
+        denom = np.std(self.association(combined, att1, att2))
 
         effect_size = (num1 - num2) / denom
         return effect_size
