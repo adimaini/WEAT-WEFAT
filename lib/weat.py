@@ -1,5 +1,7 @@
 import numpy as np
 import itertools
+from scipy import stats
+from scipy.stats.stats import zscore
 
 class Weat:
 
@@ -90,7 +92,17 @@ class Weat:
                 self.differential_association(tar1_words, tar2_words, att1, att2)
                 )
         
-        p_val = np.sum(np.array(partition_differentiation) > diff_association) / len(partition_differentiation)
+        # p_val = np.sum(np.array(partition_differentiation) > diff_association) / len(partition_differentiation)
+
+        # z_score =stats.zscore(partition_differentiation)
+        # p_val = stats.norm.sf(np.abs(zscore))
+        mean = np.mean(partition_differentiation)
+        stdev = np.std(partition_differentiation)
+        p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(diff_association)
+
+        # p_val = stats.t.sf(np.abs(diff_association), target_words.shape[0]-1 )
+
+        # partition_differentiation=0
         return p_val, diff_association, partition_differentiation
 
     def effect_size(self, t1, t2, att1, att2):
@@ -114,8 +126,9 @@ class Weat:
         combined = np.concatenate([t1, t2])
         num1 = np.mean([self.association(target, att1, att2) for target in t1]) 
         num2 = np.mean([self.association(target, att1, att2) for target in t2]) 
-        denom = np.std(np.array([self.association(target, att1, att2) for target in combined]))
-
+        combined_association = np.array([self.association(target, att1, att2) for target in combined])
+        dof = combined_association.shape[0]
+        denom = np.sqrt(((dof-1)*np.std(combined_association, ddof=1) ** 2 ) / (dof-1))
         effect_size = (num1 - num2) / denom
         return effect_size
 
