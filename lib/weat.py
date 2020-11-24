@@ -91,18 +91,11 @@ class Weat:
             partition_differentiation.append(
                 self.differential_association(tar1_words, tar2_words, att1, att2)
                 )
-        
-        # p_val = np.sum(np.array(partition_differentiation) > diff_association) / len(partition_differentiation)
-
-        # z_score =stats.zscore(partition_differentiation)
-        # p_val = stats.norm.sf(np.abs(zscore))
+                
         mean = np.mean(partition_differentiation)
         stdev = np.std(partition_differentiation)
         p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(diff_association)
 
-        # p_val = stats.t.sf(np.abs(diff_association), target_words.shape[0]-1 )
-
-        # partition_differentiation=0
         return p_val, diff_association, partition_differentiation
 
     def effect_size(self, t1, t2, att1, att2):
