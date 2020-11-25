@@ -63,41 +63,6 @@ class Weat:
         return diff_association
 
 
-    def p_value(self, t1, t2, att1, att2): 
-        '''
-        xyz
-        '''
-        diff_association = self.differential_association(t1, t2, att1, att2)
-        target_words = np.concatenate([t1, t2])
-        np.random.shuffle(target_words)
-
-        # check if join of t1 and t2 have even number of elements, if not, remove last element
-        if target_words.shape[0] % 2 != 0:
-            target_words = target_words[:-1]
-
-        # partition_differentiation = []
-        # for permutation in itertools.islice(itertools.permutations(target_words), 0, 10000):
-        #     tar1_words = np.array(permutation[:len(target_words) // 2])
-        #     tar2_words = np.array(permutation[len(target_words) // 2:])
-        #     partition_differentiation.append(
-        #         self.differential_association_sing(tar1_words, tar2_words, att1, att2)
-        #         )
-
-        partition_differentiation = []
-        for i in range(10000):
-            seq = np.random.permutation(target_words)
-            tar1_words = seq[:len(target_words) // 2]
-            tar2_words = seq[len(target_words) // 2:]
-            partition_differentiation.append(
-                self.differential_association(tar1_words, tar2_words, att1, att2)
-                )
-                
-        mean = np.mean(partition_differentiation)
-        stdev = np.std(partition_differentiation)
-        p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(diff_association)
-
-        return p_val, diff_association, partition_differentiation
-
     def effect_size(self, t1, t2, att1, att2):
         '''
         Calculates the effect size (d) between the two target variables and the attributes
@@ -125,6 +90,36 @@ class Weat:
         effect_size = (num1 - num2) / denom
         return effect_size
 
+
+
+    def p_value(self, t1, t2, att1, att2): 
+        '''
+        xyz
+        '''
+        diff_association = self.differential_association(t1, t2, att1, att2)
+        target_words = np.concatenate([t1, t2])
+        np.random.shuffle(target_words)
+
+        # check if join of t1 and t2 have even number of elements, if not, remove last element
+        if target_words.shape[0] % 2 != 0:
+            target_words = target_words[:-1]
+
+        partition_differentiation = []
+        for i in range(10000):
+            seq = np.random.permutation(target_words)
+            tar1_words = seq[:len(target_words) // 2]
+            tar2_words = seq[len(target_words) // 2:]
+            partition_differentiation.append(
+                self.differential_association(tar1_words, tar2_words, att1, att2)
+                )
+                
+        mean = np.mean(partition_differentiation)
+        stdev = np.std(partition_differentiation)
+        p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(diff_association)
+
+        # print("Mean: ", mean, "\n\n", "stdev: ", stdev, "\n\n partition ass: ", partition_differentiation, '\n\n association: ', diff_association, '\n\n p value: ', p_val)
+        return p_val, diff_association, partition_differentiation
+
 class Wefat(Weat): 
 
     def effect_size(self, tar, att1, att2):
@@ -147,9 +142,37 @@ class Wefat(Weat):
         if len(tar)==300: # check to ensure that it is a vector, and not a matrix
             combined = np.concatenate([att1, att2])
             num = self.association(tar, att1, att2)
-            denom = np.std(np.array([self.cos_similarity(tar, attribute) for attribute in combined]))
-
+            cos_similarities = np.array([self.cos_similarity(tar, att) for att in combined])
+            dof = cos_similarities.shape[0]
+            denom = np.sqrt(((dof-1)*np.std(cos_similarities, ddof=1) **2 ) / (dof-1))
             effect_size = num / denom
             return effect_size
         else: 
             raise ValueError("Passed array is not a vector, but a matrix")
+
+    def p_value(self, tar, att1, att2): 
+        '''
+        xyz
+        '''
+        association = self.association(tar, att1, att2)
+        attributes = np.concatenate([att1, att2])
+        np.random.shuffle(attributes)
+
+        # check if join of t1 and t2 have even number of elements, if not, remove last element
+        if attributes.shape[0] % 2 != 0:
+            attributes = attributes[:-1]
+
+        partition_association = []
+        for i in range(10000):
+            seq = np.random.permutation(attributes)
+            att1_words = seq[:len(attributes) // 2]
+            att2_words = seq[len(attributes) // 2:]
+            partition_association.append(
+                self.association(tar, att1_words, att2_words)
+                )
+                
+        mean = np.mean(partition_association)
+        stdev = np.std(partition_association)
+        p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(association)
+        # print("Mean: ", mean, "\n\n", "stdev: ", stdev, "\n\n partition ass: ", partition_association, '\n\n association: ', association, '\n\n p value: ', p_val)
+        return p_val, association, partition_association
