@@ -1,0 +1,34 @@
+HPC Used Commands
+
+---------GENERAL---------
+# get file size
+du -sh -- *
+
+#lustre directory
+cd /lustre/groups/caliskangrp/adimaini
+
+# home group directory
+cd /SEAS/home/adimaini
+
+--------- DEV AND SET UP -----------
+# copy the bash script from local to test. dev -> test
+scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/lib/hpc_submit.sh adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/
+
+# copy the deepspeech-env from c1 to local repo
+scp -r adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech-env /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT
+
+# copy the train/test/dev files from local to c1 lustre
+scp -r /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/data/mozilla_deepspeech/cmu/* adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/DeepSpeech/data/cmu/
+
+# copy the alphabet.txt file from local to c1 lustre
+scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/DeepSpeech/data/alphabet.txt adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/DeepSpeech/data/
+
+-----------AFTER MODEL RUNS----------
+# copy the .err .out and .err.save files from c1 lustre to local
+rsync -a --exclude 'deepspeech' adimaini@pegasus.colonialone.gwu.edu:~/lustre/groups/caliskangrp/adimaini/ /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/output/deepspeech/c1 outputs/
+
+# copy the checkpoints from c1 to local
+scp -r adimaini@pegasus.colonialone.gwu.edu:/SEAS/home/adimaini/deepspeech/outputs/* /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/output/deepspeech/checkpoints/
+
+
+

@@ -1,0 +1,89 @@
++ export CUDA_VISIBLE_DEVICES=0
++ CUDA_VISIBLE_DEVICES=0
++ python -u DeepSpeech.py --noshow_progressbar --train_files data/cmu/train.csv --test_files data/cmu/test.csv --dev_files data/cmu/dev.csv --train_batch_size 1 --test_batch_size 1 --export_dir /SEAS/home/adimaini/deepspeech/outputs --n_hidden 100 --epochs 200 --learning_rate 0.001 --dropout_rate 0.05 --checkpoint_dir /SEAS/home/adimaini/deepspeech/outputs
+Traceback (most recent call last):
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1365, in _do_call
+    return fn(*args)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1350, in _run_fn
+    target_list, run_metadata)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1443, in _call_tf_sessionrun
+    run_metadata)
+tensorflow.python.framework.errors_impl.OutOfRangeError: End of sequence
+	 [[{{node tower_0/IteratorGetNext}}]]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 572, in run_set
+    feed_dict=feed_dict)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 956, in run
+    run_metadata_ptr)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1180, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1359, in _do_run
+    run_metadata)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/client/session.py", line 1384, in _do_call
+    raise type(e)(node_def, op, message)
+tensorflow.python.framework.errors_impl.OutOfRangeError: End of sequence
+	 [[node tower_0/IteratorGetNext (defined at /SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/framework/ops.py:1748) ]]
+
+Original stack trace for 'tower_0/IteratorGetNext':
+  File "DeepSpeech.py", line 12, in <module>
+    ds_train.run_script()
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 982, in run_script
+    absl.app.run(main)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/absl/app.py", line 303, in run
+    _run_main(main, args)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/absl/app.py", line 251, in _run_main
+    sys.exit(main(argv))
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 954, in main
+    train()
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 484, in train
+    gradients, loss, non_finite_files = get_tower_results(iterator, optimizer, dropout_rates)
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 317, in get_tower_results
+    avg_loss, non_finite_files = calculate_mean_edit_distance_and_loss(iterator, dropout_rates, reuse=i > 0)
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 236, in calculate_mean_edit_distance_and_loss
+    batch_filenames, (batch_x, batch_seq_len), batch_y = iterator.get_next()
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/data/ops/iterator_ops.py", line 426, in get_next
+    name=name)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/ops/gen_dataset_ops.py", line 2518, in iterator_get_next
+    output_shapes=output_shapes, name=name)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/framework/op_def_library.py", line 794, in _apply_op_helper
+    op_def=op_def)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/util/deprecation.py", line 507, in new_func
+    return func(*args, **kwargs)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/framework/ops.py", line 3357, in create_op
+    attrs, op_def, compute_device)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/framework/ops.py", line 3426, in _create_op_internal
+    op_def=op_def)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/framework/ops.py", line 1748, in __init__
+    self._traceback = tf_stack.extract_stack()
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "DeepSpeech.py", line 12, in <module>
+    ds_train.run_script()
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 982, in run_script
+    absl.app.run(main)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/absl/app.py", line 303, in run
+    _run_main(main, args)
+  File "/SEAS/home/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/absl/app.py", line 251, in _run_main
+    sys.exit(main(argv))
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 954, in main
+    train()
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 607, in train
+    train_loss, _ = run_set('train', epoch, train_init_op)
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/train.py", line 575, in run_set
+    exception_box.raise_if_set()
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/util/helpers.py", line 149, in raise_if_set
+    raise exception  # pylint: disable = raising-bad-type
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/util/helpers.py", line 157, in do_iterate
+    yield from iterable()
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/util/feeding.py", line 118, in generate_values
+    transcript = text_to_char_array(sample.transcript, Config.alphabet, context=sample.sample_id)
+  File "/SEAS/home/adimaini/deepspeech/DeepSpeech/training/deepspeech_training/util/text.py", line 18, in text_to_char_array
+    .format(transcript, context, list(ch for ch in transcript if not alphabet.CanEncodeSingle(ch))))
+ValueError: Alphabet cannot encode transcript
+ "Poukisa, ou menm mòn ki gen anpil tèt la, w ap fè jalouzi pou mòn Bondye chwazi pou fè kay pou l rete a?" while processing sample "/lustre/groups/caliskangrp/adimaini/deepspeech/cmu_wav/eqmx_m21.wav", check that your alphabet contains all characters in the training corpus. Missing characters are: ['P', ',', 'ò', 'è', ',', 'è', 'ò', 'B', 'è', '?'].
