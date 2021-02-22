@@ -10,6 +10,9 @@ cd /lustre/groups/caliskangrp/adimaini
 # home group directory
 cd /SEAS/home/adimaini
 
+# log in to c1
+ssh adimaini@pegasus.colonialone.gwu.edu
+
 --------- DEV AND SET UP -----------
 # copy the bash script from local to test. dev -> test
 scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/lib/hpc_submit.sh adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/
@@ -29,6 +32,11 @@ rsync -a --exclude 'deepspeech' adimaini@pegasus.colonialone.gwu.edu:~/lustre/gr
 
 # copy the checkpoints from c1 to local
 scp -r adimaini@pegasus.colonialone.gwu.edu:/SEAS/home/adimaini/deepspeech/outputs/* /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/output/deepspeech/checkpoints/
+
+# copy over the CTC loss flag changes from local to c1 
+scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/gen_ctc_ops.py adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/
+
+scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/ctc_ops.py adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/
 
 
 
