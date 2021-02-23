@@ -31,12 +31,15 @@ scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/DeepSpeech/data
 rsync -a --exclude 'deepspeech' adimaini@pegasus.colonialone.gwu.edu:~/lustre/groups/caliskangrp/adimaini/ /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/output/deepspeech/c1 outputs/
 
 # copy the checkpoints from c1 to local
-scp -r adimaini@pegasus.colonialone.gwu.edu:/SEAS/home/adimaini/deepspeech/outputs/* /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/output/deepspeech/checkpoints/
+scp -r adimaini@pegasus.colonialone.gwu.edu:/SEAS/home/adimaini/deepspeech/outputs/ /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/output/deepspeech/
+
+# copy over specific testing .out files from c1 to local
+scp adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/testing980911.out /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/output/deepspeech/c1_outputs/
 
 # copy over the CTC loss flag changes from local to c1 
-scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/gen_ctc_ops.py adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/
+scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/ops/gen_ctc_ops.py adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/ops/
 
-scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/ctc_ops.py adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech-env/lib64/python3.7/site-packages/tensorflow_core/python/ops/
+scp -r /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/ops adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech2-env/lib/python3.7/site-packages/tensorflow_core/python/
 
 
 
