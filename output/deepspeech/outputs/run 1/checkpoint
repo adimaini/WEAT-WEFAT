@@ -1,0 +1,6 @@
+model_checkpoint_path: "/SEAS/home/adimaini/deepspeech/outputs/train-159893"
+all_model_checkpoint_paths: "/SEAS/home/adimaini/deepspeech/outputs/train-159617"
+all_model_checkpoint_paths: "/SEAS/home/adimaini/deepspeech/outputs/train-159686"
+all_model_checkpoint_paths: "/SEAS/home/adimaini/deepspeech/outputs/train-159755"
+all_model_checkpoint_paths: "/SEAS/home/adimaini/deepspeech/outputs/train-159824"
+all_model_checkpoint_paths: "/SEAS/home/adimaini/deepspeech/outputs/train-159893"
