@@ -1,3 +1,4 @@
 .ipynb_checkpoints
 lib/__pycache__
 fastText/
+deepspeech-env/
