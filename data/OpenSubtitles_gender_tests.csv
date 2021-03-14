@@ -1,0 +1,16 @@
+,Targets,Attributes,Effect Size,P-Value,corpus
+0,"['Male names', 'Female names']","['Career', 'Family']",1.3582752766680433,0.003355751593141054,10pct_embeddings-005.bin
+1,"['Science', 'Arts']","['Male terms', 'Female terms']",0.6612808143464431,0.09365052989272571,10pct_embeddings-005.bin
+2,"['Math', 'Arts']","['Male terms', 'Female terms']",1.1095978725062141,0.013621764565434513,10pct_embeddings-005.bin
+0,"['Male names', 'Female names']","['Career', 'Family']",1.521257606851862,0.0010081461440072381,1pct_embeddings-002.bin
+1,"['Science', 'Arts']","['Male terms', 'Female terms']",-0.2515330502353242,0.6838800765335695,1pct_embeddings-002.bin
+2,"['Math', 'Arts']","['Male terms', 'Female terms']",-0.1252332587449723,0.5996070703320526,1pct_embeddings-002.bin
+0,"['Male names', 'Female names']","['Career', 'Family']",1.5402804897389273,0.0009299017204026372,50pct_embeddings-004.bin
+1,"['Science', 'Arts']","['Male terms', 'Female terms']",0.9906912845092429,0.023702527258142703,50pct_embeddings-004.bin
+2,"['Math', 'Arts']","['Male terms', 'Female terms']",1.2142119942281009,0.008197330898800259,50pct_embeddings-004.bin
+0,"['Male names', 'Female names']","['Career', 'Family']",-0.11571152129211988,0.5883820925709231,001pct_embeddings-003.bin
+1,"['Science', 'Arts']","['Male terms', 'Female terms']",0.37372439024133686,0.22657266492085293,001pct_embeddings-003.bin
+2,"['Math', 'Arts']","['Male terms', 'Female terms']",-0.560787976301947,0.8708041516450857,001pct_embeddings-003.bin
+0,"['Male names', 'Female names']","['Career', 'Family']",0.5822086888159316,0.1266970173601959,01pct_embeddings-006.bin
+1,"['Science', 'Arts']","['Male terms', 'Female terms']",0.3412105064160967,0.24039073140524092,01pct_embeddings-006.bin
+2,"['Math', 'Arts']","['Male terms', 'Female terms']",-0.44059906954707867,0.8110111991838638,01pct_embeddings-006.bin

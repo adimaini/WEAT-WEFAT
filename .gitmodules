@@ -1,0 +1,3 @@
+[submodule "slurm-for-ml"]
+	path = slurm-for-ml
+	url = https://github.com/adimaini/slurm-for-ml.git

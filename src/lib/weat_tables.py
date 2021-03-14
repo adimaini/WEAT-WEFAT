@@ -63,7 +63,7 @@ def get_matrices(filepath, model, algorithm):
         # get targets and attribute sets
         targets = data_file.loc[target_names]
         attributes = data_file.loc[attribute_names]
-
+        
         # get arrays, one for each set of target and attribute
         tar1 = targets.loc[target_names[0]]
         att1 = attributes.loc[attribute_names[0]]
@@ -129,7 +129,7 @@ def output_table(model, algorithm, filepath):
     
     if algorithm == 'wefat':
         # get the targets from the first row of the file
-        target = pd.read_csv(filepath, nrows=1, header=None).dropna(axis=1).values.flatten().tolist()
+        target = pd.read_csv(filepath, nrows=1, header=None).dropna(axis=1).values.flatten().tolist()[1:]
         # strip whitespaces around the target names
         target = list(map(str.strip, target))
         output_df = pd.DataFrame(data = list(zip(target, e_s, p_value)), columns = ['Target', 'Effect Size', 'P-Value'])

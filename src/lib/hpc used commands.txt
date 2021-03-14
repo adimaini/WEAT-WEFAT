@@ -1,4 +1,4 @@
-HPC Used Commands
+sublHPC Used Commands
 
 ---------GENERAL---------
 # get file size
@@ -41,5 +41,8 @@ scp /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/
 
 scp -r /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/ops adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech2-env/lib/python3.7/site-packages/tensorflow_core/python/
 
+
+# find and remove testing files
+find . -type f -name testing\* -exec rm {} \;
 
 
