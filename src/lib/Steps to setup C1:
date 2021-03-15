@@ -1,0 +1,17 @@
+Steps to setup C1: 
+
+git clone --branch v0.9.3 https://github.com/mozilla/DeepSpeech
+
+python3 -m venv deepspeech2-env
+
+source deepspeech2-env/bin/activate
+
+cd DeepSpeech
+pip3 install --upgrade pip==20.2.2 wheel==0.34.2 setuptools==49.6.0
+pip3 install --upgrade -e .
+
+pip3 uninstall tensorflow
+pip3 install 'tensorflow-gpu==1.15.4'
+
+# copy over the ctc loss changes to c1
+scp -r /Users/adimaini/Documents/GW/Research/CODE.nosync/WEAT-WEFAT/deepspeech-env/lib/python3.7/site-packages/tensorflow_core/python/ops adimaini@pegasus.colonialone.gwu.edu:/lustre/groups/caliskangrp/adimaini/deepspeech/deepspeech2-env/lib/python3.7/site-packages/tensorflow_core/python/
