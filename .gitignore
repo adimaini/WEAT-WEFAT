@@ -2,3 +2,26 @@
 lib/__pycache__
 fastText/
 deepspeech-env/
+workspace.code-workspace
+.python-version
+weat_wefat_env/
+slurm-for-ml/
+src/lib/__pycache__/
+__pycache__/
+data/Bellezza Translations
+data/Bellezza translations duplicates.csv
+data/Bellezza_Lexicon.csv
+data/IARPA-babel201b-v0.2b.build/
+data/OpenTitle/
+data/good_bad_weat.csv
+data/bellezza_valnorm_output.csv
+data/cc.ht.300.bin
+data/cc.ht.300.vec
+.vscode/
+data/crawl-300d-2M.vec
+data/crawl-300d-2M.vec.zip
+data/glove.840B.300d.txt
+data/good_bad_weat.csv
+targets_attributes_data/haitian-creole/bellezza_weat.csv
+targets_attributes_data/haitian-creole/pleasant vs unpleasant.csv
+targets_attributes_data/haitian-creole/wefat sanitation disease etc.csv

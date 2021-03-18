@@ -4,6 +4,10 @@ sublHPC Used Commands
 # get file size
 du -sh -- *
 
+# watch nvidia gpu
+ssh [gpu###]
+watch -n 0.5 nvidia-smi
+
 #lustre directory
 cd /lustre/groups/caliskangrp/adimaini
 
