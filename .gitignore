@@ -25,3 +25,11 @@ data/good_bad_weat.csv
 targets_attributes_data/haitian-creole/bellezza_weat.csv
 targets_attributes_data/haitian-creole/pleasant vs unpleasant.csv
 targets_attributes_data/haitian-creole/wefat sanitation disease etc.csv
+src/notebooks/Tweets Harvesting.ipynb
+data/output/
+data/us_corpus/
+data/us_population/
+targets_attributes_data/covid related/
+targets_attributes_data/tests/
+twarc.log
+data/good_bad_weat.csv
