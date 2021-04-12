@@ -8,12 +8,6 @@ class Weat:
     def cos_similarity(self, tar, att): 
         '''
         Calculates the cosine similarity of the target variable vs the attribute
-        
-        Parameters: 
-            tar (np.array): target variable vector
-            att (np.array): attribute variable vector
-        Returns: 
-            score (float): cosine similarity score of the two vectors
         '''
         score = np.dot(tar, att) / (np.linalg.norm(tar) * np.linalg.norm(att))
         return score
@@ -22,15 +16,6 @@ class Weat:
     def mean_cos_similarity(self, tar, att): 
         '''
         Calculates the mean of the cosine similarity between the target and the range of attributes
-        Parameters: 
-            tar (np.array): target variable vector
-            att (np.array): attrbute variable matrix for the an attribute
-        
-        Returns: 
-            mean_cos (float): float type value of the mean cosine similarity between the target and the range of attributes
-        Example: 
-            tar (np.array): vector of word embeddings for "Programmer" 
-            att (np.array): matrix of word embeddings for males (man, husband, male, etc)
         '''
         mean_cos = np.mean([self.cos_similarity(tar, attribute) for attribute in att])
         return mean_cos
@@ -39,17 +24,6 @@ class Weat:
     def association(self, tar, att1, att2):
         '''
         Calculates the mean association between a single target and all of the attributes
-        Parameters: 
-            tar (np.array): target variable vector
-            att1 (np.array): attrbute variable matrix for the first attribute
-            att2 (np.array): attrbute variable matrix for the second attribute
-        
-        Returns: 
-            association (float): float type value of the association between the target (single) vs the attributes
-        Example: 
-            tar (np.array): vector of word embeddings for "Programmer" 
-            att1 (np.array): matrix of word embeddings for males (man, husband, male, etc)
-            att2 (np.array): matrix of word embeddings for females (woman, wife, female, etc)
         '''
         association = self.mean_cos_similarity(tar, att1) - self.mean_cos_similarity(tar, att2)
         return association
@@ -94,7 +68,7 @@ class Weat:
 
     def p_value(self, t1, t2, att1, att2): 
         '''
-        xyz
+        calculates the p value associated with the weat test
         '''
         diff_association = self.differential_association(t1, t2, att1, att2)
         target_words = np.concatenate([t1, t2])
@@ -152,7 +126,7 @@ class Wefat(Weat):
 
     def p_value(self, tar, att1, att2): 
         '''
-        xyz
+        calculates the p-value associated with the wefat test
         '''
         association = self.association(tar, att1, att2)
         attributes = np.concatenate([att1, att2])
@@ -176,3 +150,71 @@ class Wefat(Weat):
         p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(association)
         # print("Mean: ", mean, "\n\n", "stdev: ", stdev, "\n\n partition ass: ", partition_association, '\n\n association: ', association, '\n\n p value: ', p_val)
         return p_val, association, partition_association
+
+
+class Weac(Weat):
+
+    def __init__(self, keyword_emb1, keyword_emb2, emb1_vectors, emb2_vectors):
+        if len(keyword_emb1) != 300 & len(keyword_emb2) != 300:
+            raise ValueError("The input vectors must have 300 dimensions for this implementation of the weac class")
+
+        self.cos_similarities_emb1 = [self.cos_similarity(keyword_emb1, other_word_vector) for other_word_vector in emb1_vectors]
+        self.cos_similarities_emb2 = [self.cos_similarity(keyword_emb2, other_word_vector) for other_word_vector in emb2_vectors]
+        self.emb1_vectors = emb1_vectors
+        self.emb2_vectors = emb2_vectors
+        self.keyword_emb1 = keyword_emb1
+        self.keyword_emb2 = keyword_emb2
+
+
+    def effect_size(self):
+        '''weac implementation. Returns the effect size of a single key word between two word embeddings'''
+        return self.association() / np.std(self.cos_similarities_emb1 + self.cos_similarities_emb2)
+
+
+
+    def association(self):
+        return np.mean(self.cos_similarities_emb1) - np.mean(self.cos_similarities_emb2)
+
+    
+    def p_value(self):
+        '''calculate the p-value through permutation testing and fitting to cdf'''
+
+        partition_association = []
+
+        # perform 10000 permutations
+        for i in range(100):
+            # concatenate the randomly swapped the embedding vectors
+            embeddings_join = np.concatenate([*self._randomize_embeddings()])
+            embeddings_split = np.array_split(embeddings_join, 2)
+
+            cos_similarities_emb1 = [self.cos_similarity(self.keyword_emb1, other_word_vector) for other_word_vector in embeddings_split[0]]
+            cos_similarities_emb2 = [self.cos_similarity(self.keyword_emb2, other_word_vector) for other_word_vector in embeddings_split[1]]
+
+            partition_association.append(
+                np.mean(cos_similarities_emb1) - np.mean(cos_similarities_emb2)
+            )
+        mean = np.mean(partition_association)
+        stdev = np.std(partition_association)
+        p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(self.association())
+        return p_val
+
+
+
+
+    def _randomize_embeddings(self):
+        emb1_random_vectors = self.emb1_vectors
+        emb2_random_vectors = self.emb2_vectors
+
+        for i in range(len(emb1_random_vectors)):
+            whether_to_swap = np.random.choice([True, False])
+            if whether_to_swap:
+                intermittent_store = emb1_random_vectors[i]
+                emb1_random_vectors[i] = emb2_random_vectors[i]
+                emb2_random_vectors[i] = intermittent_store
+
+        return emb1_random_vectors, emb2_random_vectors
+
+
+ 
+        
+

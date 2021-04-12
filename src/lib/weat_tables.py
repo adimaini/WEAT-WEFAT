@@ -141,3 +141,18 @@ def output_table(model, algorithm, filepath):
 
     print('Finished.')
     return output_df
+
+def get_weac_scores(emb_model1, emb_model2, keywords, other_words):
+    word_dict = {}
+    emb1_vectors = np.array([emb_model1.wv.get_vector(word) for word in other_words])
+    emb2_vectors = np.array([emb_model2.wv.get_vector(word) for word in other_words])
+
+    for word in keywords: 
+        key1_vector = emb_model1.wv.get_vector(word)
+        key2_vector = emb_model2.wv.get_vector(word)
+        weac_object = weat.Weac(key1_vector, key2_vector, emb1_vectors, emb2_vectors)
+        effect_size = weac_object.effect_size()
+        p_value = weac_object.p_value()
+        word_dict[word] = [effect_size, p_value]
+    
+    return word_dict
