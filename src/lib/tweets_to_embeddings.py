@@ -20,12 +20,12 @@ def main():
     for file in files_in_directory:
         state_county_id = _get_filename(file)
         read_json = read_json_corpus(os.path.join(directory_to_convert, file))
+        
         if not os.path.getsize(os.path.join(directory_to_convert, file)) == 0:        
             cleaned_text = cleaning_tweet_text(read_json)
             model = create_model(cleaned_text)
             model.wv.save_word2vec_format('word_embeddings_twitter_1/' + state_county_id + '_model.bin', binary=True)
             print('Successfully exported model.')
-
             get_corpus_stats(state_county_id, read_json, cleaned_text, model)
         else: 
             print('File is empty.. going to next one.')
