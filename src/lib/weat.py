@@ -2,6 +2,7 @@ import numpy as np
 import itertools
 from scipy import stats
 from scipy.stats.stats import zscore
+import statistics
 
 class Weat:
 
@@ -137,7 +138,7 @@ class Wefat(Weat):
             attributes = attributes[:-1]
 
         partition_association = []
-        for i in range(10000):
+        for i in range(1000):
             seq = np.random.permutation(attributes)
             att1_words = seq[:len(attributes) // 2]
             att2_words = seq[len(attributes) // 2:]
@@ -155,21 +156,25 @@ class Wefat(Weat):
 class Weac(Weat):
 
     def __init__(self, keyword_emb1, keyword_emb2, emb1_vectors, emb2_vectors):
+
         if len(keyword_emb1) != 300 & len(keyword_emb2) != 300:
             raise ValueError("The input vectors must have 300 dimensions for this implementation of the weac class")
 
-        self.cos_similarities_emb1 = [self.cos_similarity(keyword_emb1, other_word_vector) for other_word_vector in emb1_vectors]
-        self.cos_similarities_emb2 = [self.cos_similarity(keyword_emb2, other_word_vector) for other_word_vector in emb2_vectors]
-        self.emb1_vectors = emb1_vectors
-        self.emb2_vectors = emb2_vectors
         self.keyword_emb1 = keyword_emb1
         self.keyword_emb2 = keyword_emb2
+        self.emb1_vectors = emb1_vectors
+        self.emb2_vectors = emb2_vectors
+        self.cos_similarities_emb1 = [self.cos_similarity(self.keyword_emb1, other_word_vector) for other_word_vector in self.emb1_vectors]
+        self.cos_similarities_emb2 = [self.cos_similarity(self.keyword_emb2, other_word_vector) for other_word_vector in self.emb2_vectors]
 
 
     def effect_size(self):
         '''weac implementation. Returns the effect size of a single key word between two word embeddings'''
-        return self.association() / np.std(self.cos_similarities_emb1 + self.cos_similarities_emb2)
-
+        combined = np.array(self.cos_similarities_emb1 + self.cos_similarities_emb2)
+        dof = combined.shape[0]
+        # using pooled std dev for two groups
+        denom = np.sqrt(((dof-1)*np.std(combined, ddof=1) **2 ) / (dof-1))
+        return self.association() / denom
 
 
     def association(self):
@@ -186,6 +191,7 @@ class Weac(Weat):
             # concatenate the randomly swapped the embedding vectors
             embeddings_join = np.concatenate([*self._randomize_embeddings()])
             embeddings_split = np.array_split(embeddings_join, 2)
+            # print([emb.shape for emb in embeddings_split[0] if emb.shape!=(300,)])
 
             cos_similarities_emb1 = [self.cos_similarity(self.keyword_emb1, other_word_vector) for other_word_vector in embeddings_split[0]]
             cos_similarities_emb2 = [self.cos_similarity(self.keyword_emb2, other_word_vector) for other_word_vector in embeddings_split[1]]
@@ -193,22 +199,25 @@ class Weac(Weat):
             partition_association.append(
                 np.mean(cos_similarities_emb1) - np.mean(cos_similarities_emb2)
             )
+        # print("\n\n partition association: ", partition_association)
         mean = np.mean(partition_association)
         stdev = np.std(partition_association)
-        p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(self.association())
+        # print("\n", mean, stdev, self.association())
+        
+        p_val = 1 - statistics.NormalDist(mu=mean, sigma=stdev).cdf(self.association())
+        # p_val = 1 - stats.norm(loc=mean, scale=stdev).cdf(self.association())
         return p_val
-
-
 
 
     def _randomize_embeddings(self):
         emb1_random_vectors = self.emb1_vectors
         emb2_random_vectors = self.emb2_vectors
 
+
         for i in range(len(emb1_random_vectors)):
             whether_to_swap = np.random.choice([True, False])
             if whether_to_swap:
-                intermittent_store = emb1_random_vectors[i]
+                intermittent_store = emb1_random_vectors[i].copy()
                 emb1_random_vectors[i] = emb2_random_vectors[i]
                 emb2_random_vectors[i] = intermittent_store
 
