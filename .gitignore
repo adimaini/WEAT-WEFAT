@@ -33,3 +33,4 @@ targets_attributes_data/covid related/
 targets_attributes_data/tests/
 twarc.log
 data/good_bad_weat.csv
+data/cmu_haitian_speech
